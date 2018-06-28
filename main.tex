@@ -79,12 +79,28 @@
 
 \begin{frame}{Sky is the limit}
   \framesubtitle{Pareto domination}
-  TODO formule de la domination et définitions
+  \begin{definition}[Pareto domination]
+  \label{def:pareto}
+  An element $X$ \emph{dominates} an element
+  $Y$ with respect to a set of measures
+  $M$, denoted $X \succ_M Y$, if and only if $$\forall m \in M, m(X)
+  \geq m(Y) \wedge \exists m \in M, m(X) > m(Y)$$.
+ \end{definition}
+ \pause
+ \begin{definition}[Pareto optimality]
+  Given a set of elements $T$, and a set of
+  measures $M$, an element $X \in T$ is Pareto-optimal if and only if it is \emph{non dominated}, i.e.\
+    $$\forall Y \in T, Y \nsucc_M X $$
+  \end{definition}
+
+The group of all Pareto-optimal elements is called \emph{Pareto optimal front} or \emph{Pareto set}
+
 \end{frame}
 
 \begin{frame}{Sky is the limit}
   \framesubtitle{The skyline operator}
   \begin{itemize}
+  \item "The skyline operator", Börzsöny \etal{}, 2001
   \item SQL query
   \item Return tuples that are Pareto optimal w.r.t.\ a set of attributes
   \end{itemize}
@@ -92,17 +108,94 @@
 
 \begin{frame}{Sky is the limit}
   \framesubtitle{The skyline operator}
-  TODO Image de skyline de Manhattan
+  \begin{figure}[htp]
+  \centering
+  \includegraphics[width=\textwidth]{manhattan.jpg}
+  \caption{The skyline of Manhattan}
+  \end{figure} 
 \end{frame}
 
 \begin{frame}{Sky is the limit}
   \framesubtitle{Skyline patterns → skypatterns}
   \begin{itemize}
+  \item "Mining dominant patterns in the sky", Soulet \etal{}, 2011
+  \item \aeth{} algorithm
   \item Generalization of the skyline query to itemset mining
-  \item Optimize measures on the patterns
-  \item
+  \pause
+  \item Optimize simultaneously various measures on the patterns
+  \item No need for user-defined thresholds
+  \pause
+  \item Post-process approach → lack of performance
   \end{itemize}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Preliminary definitions}
+\begin{frame}{Outline}
+  \tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Definitions}
+  \begin{definition}[ET-$n$-set]
+  Given an uncertain tensor $T$ and $n$ noise-tolerance thresholds
+  $(\epsilon_1, \dots, \epsilon_n) \in \mathbb{R}_+^n$, a pattern
+  $(X_1, \dots, X_n)$ is an ET-$n$-set in $T$ if and only if $\forall i
+  \in \{1, \dots, n\}$, $\forall x \in X_i$, $\sum_{t \in \prod_{i =
+      1}^n X_i\text{ s.t. }t_i = x} 1 - T_t \leq \epsilon_i$, where
+  $t_i$ denotes the $i^{\text{th}}$ component of the $n$-tuple $t$.
+  \end{definition}
+  
+  \begin{definition}[Measure]
+  \label{def:measure}
+  A \emph{measure} is a function of whose domain is $\prod_{i = 1}^n
+  2^{D_i}$ and whose codomain is $\mathbb{R}$.
+  \end{definition}
+
+\framebreak  
+  \begin{definition}[External-data-access function]
+  Given $I \subseteq \{1, \dots, n\}$, an \emph{external-data-access
+    function over $I$} is a function whose domain is $\prod_{i \in I}
+  D_i$ and whose codomain is $\mathbb{R}$.
+  \end{definition}
+
+  \begin{block}{Ex: the utility measure}
+  Given $I \subseteq \{1, \dots, n\}$ and an external-data-access
+  function $u$ over $I$, the \emph{utility} is the measure $(X_1,
+  \dots, X_n) \mapsto \sum_{t \in \prod_{i \in I} X_i} u(t)$.
+  \end{block}
+  
+\framebreak
+  \begin{definition}[Rewriting]
+  $m'$ is a \emph{rewriting} of a measure $m$ if and only if it is a
+  function, whose domain is $\left(\prod_{i = 1}^n 2^{D_i}\right)^2$,
+  whose codomain is $\mathbb{R}$, and that is such that $\forall X \in
+  \prod_{i = 1}^n 2^{D_i}$, $m'(X, X) = m(X)$.
+  \end{definition}
+  
+   \begin{block}{Ex: rewriting the utility measure}
+  Here is, for example, a rewriting $m'_{\text{utility}}$ of the utility
+measure $m_{\text{utility}}$:
+  \begin{equation*}
+  (X^a_1, \dots, X^a_n, X^m_1, \dots, X^m_n) \mapsto \sum_{\substack{t
+      \in \prod_{i \in I} X_i^a\\\text{such that }u(t) < 0}} u(t) +
+  \sum_{\substack{t \in \prod_{i \in I}X_i^m\\\text{such that }u(t) >
+      0}} u(t) \enspace .
+  \end{equation*}
+  \end{block}
+  
+\framebreak
+  \begin{definition}[Piecewise (anti-)monotonicity]
+  A measure $m$ is piecewise (anti-)monotone if and only if there exists
+  a rewriting $m'$ of $m$ such that:\\
+  $\forall U \in \prod_{i = 1}^n 2^{D_i}$, $\forall X \in \prod_{i =
+  1}^n 2^{U_i}$, $\forall L \in \prod_{i = 1}^n 2^{X_i}$, $m(X) \leq
+  m'(L, U)$.
+  \end{definition}
+
+
+  
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The \mdh{} algorithm}
