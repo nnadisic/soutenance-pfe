@@ -17,6 +17,11 @@
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
 
+%\usepackage{algorithm}
+\usepackage[ruled,linesnumbered,vlined]{algorithm2e}
+
+
+
 \newcommand{\mdh}{\texttt{multi\-dupe\-hack}}
 \newcommand{\etal}{\emph{et al.}}
 \newcommand{\aeth}{\texttt{Aetheris}}
@@ -129,6 +134,20 @@ The group of all Pareto-optimal elements is called \emph{Pareto optimal front} o
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Sky is the limit}
+  \framesubtitle{Other approaches}
+  \begin{itemize}
+  \item "Dominance programming for itemset mining", \\Negrevergne \etal{}, 2013: \domp{} algorithm
+  \item A new algebra based on pairwise comparison: skypatterns are a special case
+  \item Very general, but very slow
+  \end{itemize}
+  \begin{itemize}
+  \pause
+  \item "Mining (Soft-) Skypatterns Using Dynamic CSP", \\Ugarte \etal{}, 2015: \cpsky{} algorithm
+  \item Dynamic pruning of the search space. Based on constraint programming.
+  \end{itemize}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Preliminary definitions}
 \begin{frame}{Outline}
@@ -191,33 +210,47 @@ measure $m_{\text{utility}}$:
   1}^n 2^{U_i}$, $\forall L \in \prod_{i = 1}^n 2^{X_i}$, $m(X) \leq
   m'(L, U)$.
   \end{definition}
-
-
-  
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The \mdh{} algorithm}
+  % Présentation multidupehack : pam, arbre, pseudo code 
 \begin{frame}{Outline}
   \tableofcontents[currentsection]
 \end{frame}
 
 \begin{frame}{\mdh{} is not a dupehack}
-  % Présentation multidupehack : pam, arbre, pseudo code 
-  
+  MULTI-Dimensional Uncertain Pattern Extractions Having A Closedness Knowledge
+  \begin{figure}[htp]
+  \centering
+  \includegraphics[width=\textwidth]{tree-crop.pdf}
+  \caption{Pattern space traversal by \mdh{}}
+  \end{figure} 
 \end{frame}
+
+\begin{frame}{Pseudo-code}
+  \begin{figure}[htp]
+  \centering
+  \includegraphics[width=\textwidth]{pseudocode-mdh-crop.pdf}
+  \end{figure}
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Mining skypatterns with \mdh{}}
+  % Arbre, pseudocode
+  % Notre contribution
 \begin{frame}{Outline}
   \tableofcontents[currentsection]
 \end{frame}
 
 \begin{frame}{Dupe hacks in the sky}
-  % Arbre, pseudocode
-  % Notre contribution
-  
+\vspace{0.3cm}
+  \begin{figure}[htp]
+  \centering
+  \includegraphics[width=\textwidth]{pseudocode-sky-crop.pdf}
+  \end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -229,32 +262,121 @@ measure $m_{\text{utility}}$:
 \subsection{Skypatterns in 0/1 matrices: a comparative study}
 
 \begin{frame}{Comparative study}
-
+\framesubtitle{Experimental protocol}
+  \begin{itemize}
+      \item Comparison with \aeth{}, \domp{}, \cpsky{} 
+      \item 23 UCI datasets : 0/1 matrices
+      \item All algorithms output the same skypatterns
+      \item Timeout of 2 hours
+  \end{itemize}
 \end{frame}
 
+\begin{frame}{Comparative study}
+  \begin{figure}[htp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{uci-histo-split.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Comparative study}
+\framesubtitle{Results}
+  \begin{itemize}
+      \item \mdh{} $>$ \cpsky{} $>$ \aeth{} $>$ \domp{}  
+      \item On average, \mdh{} is 11 $\times$ faster that \cpsky{}\\ and 42 $\times$ faster than \aeth{}
+     \end{itemize}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Skypatterns in real-life uncertain tensors}
 
+\begin{frame}{A complex piecewise (anti-)monotone measure}
+\begin{definition}[Slope]
+  \label{def:slope}
+  Given $I \subseteq \{1, \dots, n\}$ and two external-data-access
+  functions $x$ and $y$ over $I$, the \emph{slope} is the following
+  measure:
+  \begin{displaymath}
+    (X_1, \dots, X_n) \mapsto \frac{\displaystyle\sum_{t \in \prod_{i
+          \in I} X_i} x(t) \sum_{t \in \prod_{i \in I} X_i} y(t) -
+      \left|\prod_{i \in I} X_i\right|\sum_{t \in \prod_{i \in I} X_i}
+      x(t)y(t)}{\displaystyle\left(\sum_{t \in \prod_{i \in I} X_i}
+        x(t)\right)^2 - \left|\prod_{i \in I} X_i\right|\sum_{t \in
+        \prod_{i \in I}X_i} x(t)^2} \enspace .
+  \end{displaymath}
+\end{definition}
+\end{frame}
+
 \begin{frame}{Twitch}
   \framesubtitle{Experimental protocol}
+  \begin{itemize}
+      \item 3-way uncertain tensor
+      \item Connection and disconnection times of spectators who watched Starcraft 2 games streaming from October to February 2014
+      \item 1198292 spectators, 92 channels, 19 weeks
+      \item Maximize number of channels, number of weeks, and the \emph{slope} of the regression line of the points associated with every pair (channel, week).
+      \item Points: ordinate is the maximal number of simultaneous viewers the
+channel got during the week; abscissa is the time, in seconds since the
+beginning of the collect, when this maximum was reached.
+  \end{itemize}
 
 \end{frame}
 
 \begin{frame}{Twitch}
-  \framesubtitle{Results}
+  \framesubtitle{Exemple of data}
+  Data in the uncertain tensor\\
+  \texttt{10 90stardust alelau18 0.874297}\\
+  \texttt{9 zombiegrub starfire1986 0.00483032}\\
+  ...\\
+  Points\\
+  \texttt{selectkr 1 86820 5}\\
+  \texttt{hkesports 10 5479109 2}\\
+  ...
+\end{frame}
 
+\begin{frame}{Twitch}
+  \framesubtitle{Results}
+\begin{itemize}
+\item 114 skypatterns extracted in 7 minutes 34 seconds
+    \item Skypatterns that involve the last three weeks (January 27th to February 16th) of the collect always involve egstephano (2014 WCS Season 2 Europe)
+    \item Skypatterns with weeks ranging from mid-January to the end of the collect involve the egjd channel (2014 Global StarCraft II League Season 1)
+\end{itemize}
 \end{frame}
 
 
 \begin{frame}{Vélo'v}
   \framesubtitle{Experimental protocol}
-  
+  \begin{itemize}
+      \item 4-way uncertain tensor
+      \item 2-years usage logs of the Vélo'v network
+      \item 327 departure stations, 327 arrival stations,\\ 7 days, 24 1-hour periods
+      \item Maximize the size of patterns in all dimensions and find \emph{cross-graph quasi-cliques}
+  \end{itemize}
+  Example of data:\\
+  \texttt{mar 8 9004 9013 1}\\
+  \texttt{lun 11 3037 3001 0.775745}\\
+  \texttt{ven 24 10002 10013 1.24637e-06}
 \end{frame}
 
 \begin{frame}{Vélo'v}
   \framesubtitle{Results}
-  
+  51 skypatterns extracted in 283 seconds
+\end{frame}
+
+\begin{frame}{Vélo'v}
+  \framesubtitle{Results}
+  \begin{figure}[htp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{pattern-week.png}
+  \caption{Stations that exchanged lots of bikes between monday and saturday from 3pm to 7pm}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Vélo'v}
+  \framesubtitle{Results}
+  \begin{figure}[htp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{pattern-weekend.png}
+  \caption{Stations that exchanged lots of bikes saturday and sunday from 3pm to 7pm}
+  \end{figure}
 \end{frame}
 
 

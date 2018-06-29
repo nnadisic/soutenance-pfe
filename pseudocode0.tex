@@ -1,0 +1,26 @@
+\begin{algorithm}
+  \begin{algorithmic}
+    \STATE \textbf{Data:} $U, V, S$
+    \STATE \textbf{Output:} Every closed pattern containing every
+    element in $U$, possibly some elements in $V$, and satisfying a
+    piecewise (anti)-monotone constraint $\mathcal{C}$ (see
+    Section~\ref{sec:pam})
+    \IF{$\mathcal{C}$ may be satisfied by a pattern descending from
+      this node $\wedge U \cup V$ is closed}
+    \IF{$V = (\emptyset, \dots, \emptyset)$}
+    \STATE $\mathbf{output}(U)$
+    \ELSE
+    \STATE Choose $e \in V$
+    \STATE \texttt{multidupehack}($U \cup \{e\},$
+    \STATE $\{v \in V \setminus \{e\} \: | \: U \cup \{e\} \cup
+    \{v\}\text{ is connected}\},$
+    \STATE $\{s \in S \: | \: U \cup \{e\} \cup \{s\}\text{ is
+      connected}\}$)
+    \STATE \texttt{multidupehack}($U , V \setminus \{e\}, S \cup
+    \{e\}$)
+    \ENDIF
+    \ENDIF
+  \end{algorithmic}
+  \caption{\texttt{multidupehack}.}
+  \label{alg:multidupehack}
+\end{algorithm}

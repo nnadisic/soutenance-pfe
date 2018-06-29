@@ -1,0 +1,61 @@
+\begin{algorithm}
+    \DontPrintSemicolon
+  % \SetAlgoVlined{}
+
+  % \SetKwFunction{FMain}{\mdh{}}
+  \SetKwFunction{Fmine}{mine}
+  \SetKwProg{Fn}{Function}{:}{}
+
+  % \SetKwComment{Comment}{$\triangleright $}{}
+  % \SetSideCommentRight
+  % \SetFillComment
+
+  \KwData{$T$, $\epsilon_1$, \dots, $\epsilon_n$, $M'$ \tcc*{global variables}}
+  \KwResult{the skypatterns in $T$}
+
+%   \Fn{\FMain{}}
+%     {
+    $\mathcal{S} \leftarrow \emptyset$ \tcc*{global variable}\label{alg:sky_init}
+    \texttt{mine}($\emptyset, \dots , \emptyset, D_1, \dots, D_n$)\\
+    \KwRet $\mathcal{S}$\label{alg:sky_return}\\
+    % }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % \setcounter{AlgoLine}{0}
+  \medskip{}
+
+  % \KwData{$L, U$}
+
+  % \KwResult{Every pattern containing every element in $L$, possibly
+  %   some elements in $U \setminus L$, and being non-dominated w.r.t.\
+  %   the set of measures $M$}
+
+  \Fn{\Fmine{$L$, $U$}}
+    {
+  \If{$\forall P \in \mathcal{S}$, $\exists m' \in M' \mid m'(P,P) < m'(L,U) \vee \forall m' \in M', m'(P,P) \leq m'(L,U)$\label{alg:firstif}}
+      {
+      \eIf{$L = U$\label{alg:et-n-set_found}}
+        {%then
+        $\mathcal{S} \leftarrow \{ P \in \mathcal{S} \mid L \nsucc_M P \} \cup \{ L \}$\label{alg:sky_refine}\\
+        }
+        {%else then
+        choose $e \in \cup_{i=1}^n U_i \setminus L_i$\label{alg:choose}\\
+          \tcc{Let $k$ the index of the dimension $e$ is chosen in}
+
+        \texttt{mine}($L_1, \dots, L_k \cup \{e\}, \dots, L_n$,
+$U_1', \dots, U_n'$)\\
+\tcc{where $\forall i \in \{1, \dots, n\}$, $U'_i$ is defined as in \fref{tree}}
+          % $\{f \in U_i \mid (L_1, \dots, L_k \cup \{e\}, \dots, L_i \cup \{f\}, \dots, L_n)$ is a ET-$n$-set$\}$)\\
+          %\Indm
+
+       \texttt{mine}($L_1, \dots, L_n, U_1, \dots, U_k \setminus \{e\}, \dots, U_n$)\\
+      }
+    }
+
+  }
+
+
+
+  \caption{\mdh{} for skypattern mining}
+  \label{alg:multidupehack}
+\end{algorithm}
