@@ -73,14 +73,6 @@
 % Histoire depuis Pareto, Borzony, Soulet, Ugarte
 % Notre contribution
 
-\begin{frame}{Sky is the limit}
-  \framesubtitle{Pareto domination}
-  \begin{figure}[htp]
-    \centering
-    \includegraphics[width=0.6\textwidth]{domination.pdf}
-    \caption{A Pareto optimal front of elements w.r.t.\ two measures.}
-  \end{figure}  
-\end{frame}
 
 \begin{frame}{Sky is the limit}
   \framesubtitle{Pareto domination}
@@ -97,9 +89,16 @@
   measures $M$, an element $X \in T$ is Pareto-optimal if and only if it is \emph{non dominated}, i.e.\
     $$\forall Y \in T, Y \nsucc_M X $$
   \end{definition}
-
 The group of all Pareto-optimal elements is called \emph{Pareto optimal front} or \emph{Pareto set}
+\end{frame}
 
+\begin{frame}{Sky is the limit}
+  \framesubtitle{Pareto domination}
+  \begin{figure}[htp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{domination2.pdf}
+    \caption{A Pareto optimal front of elements w.r.t.\ two measures.}
+  \end{figure}  
 \end{frame}
 
 \begin{frame}{Sky is the limit}
@@ -145,6 +144,14 @@ The group of all Pareto-optimal elements is called \emph{Pareto optimal front} o
   \pause
   \item "Mining (Soft-) Skypatterns Using Dynamic CSP", \\Ugarte \etal{}, 2015: \cpsky{} algorithm
   \item Dynamic pruning of the search space. Based on constraint programming.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Sky is the limit}
+  \framesubtitle{Limitations of existing approaches}
+  \begin{itemize}
+  \item Only manage 0/1 matrices
+  \item Lack of performance
   \end{itemize}
 \end{frame}
 
@@ -229,12 +236,12 @@ measure $m_{\text{utility}}$:
   \end{figure} 
 \end{frame}
 
-\begin{frame}{Pseudo-code}
-  \begin{figure}[htp]
-  \centering
-  \includegraphics[width=\textwidth]{pseudocode-mdh-crop.pdf}
-  \end{figure}
-\end{frame}
+% \begin{frame}{Pseudo-code}
+%   \begin{figure}[htp]
+%   \centering
+%   \includegraphics[width=\textwidth]{pseudocode-mdh-crop.pdf}
+%   \end{figure}
+% \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -310,7 +317,7 @@ measure $m_{\text{utility}}$:
   \framesubtitle{Experimental protocol}
   \begin{itemize}
       \item 3-way uncertain tensor
-      \item Connection and disconnection times of spectators who watched Starcraft 2 games streaming from October to February 2014
+      \item Connection and disconnection times of spectators who watched Starcraft 2 games streaming from October 2013 to February 2014
       \item 1198292 spectators, 92 channels, 19 weeks
       \item Maximize number of channels, number of weeks, and the \emph{slope} of the regression line of the points associated with every pair (channel, week).
       \item Points: ordinate is the maximal number of simultaneous viewers the
@@ -394,8 +401,10 @@ beginning of the collect, when this maximum was reached.
   \item Design of an efficient and versatile algorithm
   \item Implementation by extending \mdh{}
     \begin{itemize}
-    \item Faster than the competitors, despite greater generality
+    \item Manage a large class of measures
+    \item Outperform the competitors, despite greater generality
     \item Able to mine relevant pattern in real-life situations
+    \item No need for user-defined thresholds
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -411,53 +420,3 @@ beginning of the collect, when this maximum was reached.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% \section{Some \LaTeX{} Examples}
-
-% \subsection{Tables and Figures}
-
-% \begin{frame}{Tables and Figures}
-
-% \begin{itemize}
-% \item Use \texttt{tabular} for basic tables --- see Table~\ref{tab:widgets}, for example.
-% \item You can upload a figure (JPEG, PNG or PDF) using the files menu. 
-% \item To include it in your document, use the \texttt{includegraphics} command (see the comment below in the source code).
-% \end{itemize}
-
-% % Commands to include a figure:
-% %\begin{figure}
-% %\includegraphics[width=\textwidth]{your-figure's-file-name}
-% %\caption{\label{fig:your-figure}Caption goes here.}
-% %\end{figure}
-
-% \begin{table}
-% \centering
-% \begin{tabular}{l|r}
-% Item & Quantity \\\hline
-% Widgets & 42 \\
-% Gadgets & 13
-% \end{tabular}
-% \caption{\label{tab:widgets}An example table.}
-% \end{table}
-
-% \end{frame}
-
-% \subsection{Mathematics}
-
-% \begin{frame}{Readable Mathematics}
-
-% Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
-% $$S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
-%       = \frac{1}{n}\sum_{i}^{n} X_i$$
-% denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
-
-% \begin{block}{Examples}
-% Some examples of commonly used commands and features are included, to help you get started.
-% \end{block}
-
-% \end{frame}
-
-% \end{document}
